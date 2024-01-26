@@ -1,16 +1,24 @@
+import secrets
+
 from cinema import CreditCard, User
+from reports import PdfReport
 
-if __name__ == "__main__":
-    full_name = input("Your full name?:")
-    pref_seat = input("Preferred seat number?:")
-    card_type = input("Your card type?:")
 
-    card_number = input("Your card number?:")
-    card_cvc = input("Your card cvc?:")
-    card_holder = input("Card holder name?:")
-
+def run_backend(full_name, pref_seat, card_type, card_number, card_cvc, card_holder):
     user = User(full_name)
-    user.buy(pref_seat, CreditCard(card_type, card_number, card_cvc, card_holder))
+    return user.buy(pref_seat, CreditCard(card_type, card_number, card_cvc, card_holder))
+
+
+# if __name__ == "__main__":
+    # full_name = input("Your full name?:")
+    # pref_seat = input("Preferred seat number?:")
+    # card_type = input("Your card type?:")
+    #
+    # card_number = input("Your card number?:")
+    # card_cvc = input("Your card cvc?:")
+    # card_holder = input("Card holder name?:")
+
+    # run_backend()
 
     # 1.tell whether purchase was succesful or not
 

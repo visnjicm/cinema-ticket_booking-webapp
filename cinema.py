@@ -1,6 +1,7 @@
 import secrets
 
 from SQLClasses import SQLTable
+from reports import PdfReport
 
 
 class CreditCard:
@@ -32,22 +33,26 @@ class User:
                 if cc_db.get_balance(card) > seat_price:
                     print("You have enough money to buy the ticket! :)")
 
-                    with open('ticket.txt', 'w') as file:
-                        file.write(f"MOVIE TICKET\n\n\n")
-                        file.write(f"Name: {self.name}\nSeat: {seat}\nCost:{seat_price}\n\n")
-                        file.write(f"Ticket ID/Confirmation: {secrets.token_urlsafe(12)}")
+                    ticket = PdfReport('ticket.pdf')
+                    link = ticket.generate(self.name, secrets.token_urlsafe(12), seat_price, seat)
 
                     seat_db.occupy(seat)
                     cc_db.change_balance(seat_price, card)
 
+                    print("Purchase successful!")
+                    return (f"Purchase successful! Click this link to view "
+                            f"your ticket: {link}")
+
                 else:
                     print("Ticket purchase declined. Insufficient funds. :(")
+                    return "Purchase unsuccessful. Insufficient funds."
+
             else:
                 print("Credit card not found. :(")
-                print("Purchase unsuccessful. Closing app.")
+                return "Purchase unsuccessful. Credit card not found!"
         else:
             print(f"The seat {seat} is not available! :(")
-            print("Purchase unsuccessful. Closing app.")
+            return "Purchase unsuccessful. The seat is not available."
 
     # seat_db = SeatDB()
     # if seat_db.is_free(pref_seat):
